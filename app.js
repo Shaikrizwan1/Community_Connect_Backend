@@ -1,8 +1,8 @@
-// app.js
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
 
 dotenv.config();
 
@@ -18,6 +18,14 @@ const campaignRoutes = require('./routes/campaignRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/campaigns', campaignRoutes);
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// The "catchall" handler: for any request that doesn't match one above, send back index.html.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 // Connect to MongoDB
 // mongoose.connect(process.env.MONGODB_URI, {
