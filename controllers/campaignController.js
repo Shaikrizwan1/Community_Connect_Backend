@@ -5,9 +5,23 @@ exports.getAllCampaigns = async (req, res) => {
         const campaigns = await Campaign.find({ isActive: 1 });
         res.json(campaigns);
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Server error' });
     }
 };
+exports.getCampaign = async (req, res) => {
+    try {
+        console.log('getCampaign hit')
+        const { id } = req.params;
+
+        const campaigns = await Campaign.find({ _id: id });
+        res.json(campaigns);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
 
 
 exports.createCampaign = async (req, res) => {
@@ -32,6 +46,7 @@ exports.createCampaign = async (req, res) => {
 exports.getMyCampaigns = async (req, res) => {
     try {
         const { id: userId } = req.user;
+        console.log(userId)
 
         if (!userId) {
             return res.status(400).json({ message: 'userId is required' });
@@ -65,6 +80,7 @@ exports.deleteCampaign = async (req, res) => {
 
         res.json({ message: 'Campaign deleted successfully' });
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Server error' });
     }
 };
